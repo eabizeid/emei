@@ -1,0 +1,40 @@
+@(title: String)(content: Html)
+
+<!doctype html>
+<html lang="en">
+    <head>
+            <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+
+        <title>@title</title>
+    </head>
+    <body>
+        <div id="header">
+            <h1><a href="/">EMEI - Escuela Modelo de Educacion Integral</a></h1>
+            <ul id="menu">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/alumnos">Administración Alumnos</a></li>
+                <li><a href="/pagos">Administracion de Pagos</a></li>
+                <li><a href="/gastos">Administracion de Gastos</a></li>
+                <li><a href="/reports">Reportes</a></li>
+
+
+            </ul>
+        </div>
+        @content
+
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="/assets/javascripts/jquery-3.3.1.min.js" ></script>
+        <script src="/assets/javascripts/popper.min.js" ></script>
+        <script src="/assets/javascripts/bootstrap.min.js" ></script>
+        <script src="/assets/javascripts/alumnos.js" ></script>
+    </body>
+</html>
