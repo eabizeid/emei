@@ -23,7 +23,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
         val familias: List[FamiliaApi]  = groupedByFamilia.map {
           case (familiaRow, tuples ) =>
             val alumnos = tuples.map(_._1).map {a =>
-              AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel)}
+              AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel, a.descuentoEspecial)}
             FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos)
         }.toList
         familias
@@ -38,7 +38,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
           case (familiaRow, tuples ) =>
             val alumnos = tuples.map(_._1).map {a =>
 
-              AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel)}
+              AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel, a.descuentoEspecial)}
             FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos)
         }.toList
         familias.head
@@ -53,7 +53,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
         val familias: List[FamiliaApi]  = groupedByFamilia.map {
           case (familiaRow, tuples ) =>
             val alumnos = tuples.map(_._1).map {a =>
-              AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel)
+              AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel, a.descuentoEspecial)
             }
             FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos)
         }.toList
@@ -61,6 +61,10 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
     }
   }
 
+
+  def countAlumnosByFlia(implicit ec: ExecutionContext, familia: Int) = {
+    db.run(alumnos.filter(_.familia === familia).result).map( _.size)
+  }
 
   private def getAlumnos(maybeId: Option[Int] = None) = {
     val alumnosQuery  = maybeId match {
@@ -93,6 +97,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
 
 
     val withNivel = nivel match {
+      case None => withFamily
       case Some(n) => {
         if (n!="") {
           val nivelGradosIds = nivelGrados.filter(_.nivel === n.toInt).map(_.id)
@@ -104,6 +109,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
     }
 
     val withGrado = grado match {
+      case None => withNivel
       case Some(n) => {
         if (n!="") {
           val nivelGradosIds = nivelGrados.filter(_.grado === n.toInt).map(_.id)
@@ -127,21 +133,21 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
   }
 
 
-  def create( legajo: String, nombres:String, apellidos: String, familia:Int, nivelgrado: Int): Future[Alumno] = db.run {
+  def create( legajo: String, nombres:String, apellidos: String, familia:Int, nivelgrado: Int, descuentoEspecial: String): Future[Alumno] = db.run {
     // We create a projection of just the anio, since we're not inserting a value for the id column
 
-    (alumnos.map(f => (f.legajo, f.nombres, f.apellidos, f.nivel, f.familia))
+    (alumnos.map(f => (f.legajo, f.nombres, f.apellidos, f.nivel, f.familia, f.descuentoEspecial))
       // Now define it to return the id, because we want to know what id was generated for the Alumno
       returning alumnos.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into ((tupla, id) => Alumno(id, tupla._1, tupla._2,  tupla._3,  tupla._4, tupla._5, true))
+      into ((tupla, id) => Alumno(id, tupla._1, tupla._2,  tupla._3,  tupla._4, tupla._5, true, tupla._6))
       // And finally, insert the Alumno into the database
-      ) += (legajo, nombres, apellidos, nivelgrado, familia)
+      ) += (legajo, nombres, apellidos, nivelgrado, familia, descuentoEspecial)
   }
 
-  def update(id: Int, legajo: String, nombres:String, apellidos: String, familia:Int, nivelgrado: Int, activo: Boolean) = db.run{
-    alumnos.insertOrUpdate(Alumno(id, legajo, nombres, apellidos, nivelgrado, familia, activo))
+  def update(id: Int, legajo: String, nombres:String, apellidos: String, familia:Int, nivelgrado: Int, activo: Boolean, descuentoEspecial: String) = db.run{
+    alumnos.insertOrUpdate(Alumno(id, legajo, nombres, apellidos, nivelgrado, familia, activo, descuentoEspecial))
   }
 
 

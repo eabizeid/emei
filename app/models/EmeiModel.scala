@@ -23,10 +23,8 @@ case class NivelGrado(id: Int, nivel: Int, grado: Int )
 
 case class Familia(id: Int, descripcion: String, observaciones: String)
 
-case class Alumno(id:Int, legajo: String, nombres: String, apellidos: String, nivel: Int, familia: Int, activo: Boolean)
+case class Alumno(id:Int, legajo: String, nombres: String, apellidos: String, nivel: Int, familia: Int, activo: Boolean, descuentoEspecial: String)
 
 case class CuotaBase (id: Int, valor: Double, anio: Int, mes: Int)
 
-case class Cuota (id: Int, cuotaBase: Int, anio: Int, mes: Int)
-
-case class Pago (id: Int, recibo: String, cuota: Int, tipoPago: Int, familia: Int, descuentoAplicado: Double)
+case class Pago (id: Int, recibo: String, cuota: Int, tipoPago: Int, familia: Int, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean )

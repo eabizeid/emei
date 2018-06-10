@@ -1,4 +1,4 @@
-@(buscarForm: Form[BuscarCuotasPorFamiliaForm], familiasWithoutAlumnos: List[FamiliaApi])(implicit request: MessagesRequestHeader)
+@(pagoForm: Form[PagoForm],totalSinDescuento: Double, alumnos: List[AlumnoApi], cuotasAPagar: String)(implicit request: MessagesRequestHeader)
 
     @import helper._
 
@@ -14,26 +14,58 @@
         <div class="wrap">
             <div class="box">
                 <h2><em >Cuotas</em></h2>
-                <p>En esta sección podrá Generar la obligación de pago Mensual, consultar las cuotas adeudadas por familia y generar el pago</p>
+                <p>Informacionsobre el pago a realizar</p>
             </div>
         </div>
     </div>
+    @form(routes.PagoController.realizarPago()) {
         <div class="wrap">
-            <h3>Generar Obligacion de pagos Mensual</h3>
-            @form(routes.PagoController.generarObligacionDePagoMensual()) {
-                @inputText(buscarForm("valorCuotaBase"))
-                <button class="btn btn-large btn-primary" type="submit" value="buscar">Obligacion de pago mensual</button>
-            }
-            <h3>Consultar pagos pendientes por familia</h3>
-            @form(routes.PagoController.buscar()) {
-                <div class="form-row">
-                @select(buscarForm("familia"), familiasWithoutAlumnos.sortBy(_.descripcion).map(f => f.id.toString -> f.descripcion), '_label -> "Familia", 'class -> "form-control", '_class -> "form-group col-md-6")
-                </div>
-                <button class="btn btn-large btn-primary" type="submit" value="buscar">Buscar</button>
-            }
+
+            <div class="form-row">
+                <h3>Cantidad de alumnos: @alumnos.size</h3>
+            </div>
+            <div class="form-row">
+                <h3>Alumnos</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>Descuento Especial</th>
+                    </thead>
+                    <tbody>
+                    @for(alumno <- alumnos) {
+                        <tr>
+                            <td>@alumno.apellidos</td>
+                            <td>@alumno.nombres</td>
+                            <td>@alumno.descuentoEspecial</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="form-group">
+                <label>Valor Total Sin Descuentos: @totalSinDescuento</label>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="form-row">
+                @inputText(pagoForm("totalAPagar"), '_label -> "Total a pagar", '_class -> "form-group col-md-3")
+
+            </div>
+            <div class="form-row">
+                @checkbox(pagoForm("pagoParcial"), '_label -> "Pago parcial?", '_class -> "form-group col-md-3")
+
+            </div>
+            <button class="btn btn-large btn-primary" type="submit" value="buscar">Pagar</button>
+           <input type="hidden" name="cuotasAPagar" value="@cuotasAPagar" />
+
+
+
 
         </div>
-
+    }
 
 
 

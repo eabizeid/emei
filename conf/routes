@@ -5,8 +5,7 @@
 
 # An example controller showing how to use dependency injection
 GET     /                          controllers.HomeController.index
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file)
@@ -14,10 +13,22 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 + nocsrf
 POST     /alumno                     controllers.AlumnoController.addAlumno
-POST     /familia                     controllers.AlumnoController.addFamilia
-GET     /alumnos                    controllers.AlumnoController.getAlumnos
-GET     /alumnos/:id                   controllers.AlumnoController.modificar(id: Int)
-GET  /alumnos/deactivate/:id                   controllers.AlumnoController.borrar(id: Int)
+POST     /familia                    controllers.AlumnoController.addFamilia
+GET     /alumnos                     controllers.AlumnoController.getAlumnos
+GET     /alumnos/:id                 controllers.AlumnoController.modificar(id: Int)
+GET  /alumnos/deactivate/:id         controllers.AlumnoController.borrar(id: Int)
+
+GET      /pagosFamilia               controllers.PagoController.showPagarCuota
++ nocsrf
+POST     /buscarCuotas               controllers.PagoController.buscar
++ nocsrf
+POST     /generarObligacionMensual   controllers.PagoController.generarObligacionDePagoMensual
++ nocsrf
+POST     /generarPago                controllers.PagoController.generarPago
+
++ nocsrf
+POST     /realizarPago                controllers.PagoController.realizarPago
+
 + nocsrf
 POST     /buscar                     controllers.AlumnoController.buscar
 

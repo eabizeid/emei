@@ -1,4 +1,4 @@
-@(familias: Seq[FamiliaApi])(implicit request: MessagesRequestHeader)
+@(pagos: Seq[PagoApi])(implicit request: MessagesRequestHeader)
 
 @import helper._
 
@@ -11,44 +11,39 @@
     <div id="teaser">
         <div class="wrap">
             <div class="box">
-                <h2><em >Alumnos</em></h2>
+                <h2><em >Pagos Pendientes</em></h2>
             </div>
         </div>
     </div>
     <div  class="wrap">
         <div class="search">
-
-        @for(familia <- familias) {
-
-            <h3>Familia: @familia.descripcion.toUpperCase</h3>
-            <h3>Observaciones: @familia.observaciones</h3>
+        @form(routes.PagoController.generarPago()) {
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Legajo</th>
-                        <th scope="col">Nombres</th>
-                        <th scope="col">Apellidos</th>
-                        <th scope="col">Nivel</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Valor Cuota Base</th>
+                        <th scope="col">Pago Parcial</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                @for(a <- familia.alumnos) {
+                @for(pago <- pagos) {
                     <tr>
-                        <td scope="row">@a.id</td>
-                        <td>@a.legajo</td>
-                        <td>@a.nombres</td>
-                        <td>@a.apellidos</td>
-                        <td>@a.nivel</td>
-                        <td><button class="btn btn-outline-success btn-sm" type="button"> <a  style="color:inherit" href="@routes.AlumnoController.modificar(a.id)">Modificar</a></button>
-                            <button type="button" class="btn btn-outline-danger btn-sm"> <a methods="DELETE" style="color:inherit" href="@routes.AlumnoController.borrar(a.id)">Borrar</a></button></td>
+                        <td></td>
+                        <td>@pago.anioCuota</td>
+                        <td>@pago.mesCuota</td>
+                        <td>@pago.valorCuotaBase</td>
+                        <td>@pago.pagoParcial</td>
+                        <td><input type="checkbox" name="cuotasAPagar" value="@pago.id" /> </td>
                     </tr>
                 }
                 </tbody>
 
             </table>
-
+            <button class="btn btn-large btn-primary" type="submit" value="generar pago">Generar Pago</button>
         }
         </div>
     </div>

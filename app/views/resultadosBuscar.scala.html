@@ -30,6 +30,7 @@
                         <th scope="col">Nombres</th>
                         <th scope="col">Apellidos</th>
                         <th scope="col">Nivel</th>
+                        <th scope="col">Descuento Especial</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                         <td>@a.nombres</td>
                         <td>@a.apellidos</td>
                         <td>@a.nivel</td>
+                        <td>@a.descuentoEspecial</td>
                         <td><button class="btn btn-outline-success btn-sm" type="button"> <a  style="color:inherit" href="@routes.AlumnoController.modificar(a.id)">Modificar</a></button>
                             <button type="button" class="btn btn-outline-danger btn-sm"> <a methods="DELETE" style="color:inherit" href="@routes.AlumnoController.borrar(a.id)">Borrar</a></button></td>
                     </tr>

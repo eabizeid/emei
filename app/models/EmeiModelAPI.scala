@@ -19,15 +19,13 @@ case class PhoneApi(id: Int, number: String, contactoId: Int)
 
 case class NivelGradoApi(id: Int, nivel: NivelApi, grado: GradoApi )
 
-case class AlumnoApi(id:Int, legajo: String, nombres: String, apellidos: String, nivel: Int)
+case class AlumnoApi(id:Int, legajo: String, nombres: String, apellidos: String, nivel: Int, descuentoEspecial: String)
 
 case class FamiliaApi(id: Int, descripcion: String, observaciones: String, alumnos: Seq[AlumnoApi])
 
-case class CuotaBaseApi (id: Int, valor: Double, anio: AnioApi, mes: MesApi)
+case class PagoApi (id: Int, recibo: String, valorCuotaBase: Double, mesCuota: Int, anioCuota:Int, tipoPago: String, familia: String, descuentoAplicado: Double, interes:Double, pagoParcial: Double, resuelto:Boolean)
 
-case class CuotaApi (id: Int, cuotaBase: CuotaBaseApi, anio: AnioApi, mes: MesApi)
-
-case class PagoApi (id: Int, recibo: String, cuota: CuotaApi, tipoPago: TipoPagoApi, familia: FamiliaApi, descuentoAplicado: Double)
+case class CuotaApi(id: Int, mes: Int, anio: Int, valorBase: Double)
 
 object NivelApi {
   implicit val alumnoFormat = Json.format[NivelApi]
@@ -65,15 +63,11 @@ object FamiliaApi{
   implicit val alumnoFormat = Json.format[FamiliaApi]
 }
 
-object CuotaBaseApi {
-  implicit val alumnoFormat = Json.format[CuotaBaseApi]
+object PagoApi {
+  implicit val alumnoFormat = Json.format[PagoApi]
 }
 
 object CuotaApi {
-  implicit val alumnoFormat = Json.format[CuotaApi]
-}
-
-object PagoApi {
-  implicit val alumnoFormat = Json.format[PagoApi]
+  implicit val format = Json.format[CuotaApi]
 }
 

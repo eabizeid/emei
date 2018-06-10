@@ -41,7 +41,7 @@
                 <div class="form-row">
 
                         @select(alumno("nivel"),nivelGrados.sortBy(_.nivel.nivel).map(n => n.id.toString -> s"${n.nivel.nivel} - ${n.grado.grado}"), '_label -> "Nivel", 'class -> "form-control", '_class -> "form-group col-md-6")
-
+                        @inputText(alumno("descuentoEspecial"), '_label -> "Descuento Especial", '_class -> "form-group col-md-6")
                 </div>
                 <div>
                     <input id="id" type="hidden" name="id" value="@alumno.data.get("id")" />

@@ -25,10 +25,23 @@ class FamiliaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
     }
   }
 
+  def getFamiliaById(implicit ec: ExecutionContext, id:  Int) = {
+    db.run(getFamilias(Some(id)).result) map   {
+      dataTuples =>
+        val familias = dataTuples.map { f =>
+          FamiliaApi(f.id, f.descripcion, f.observaciones, List())
+        }
+        familias.toList
+    }
+  }
 
   private def getFamilias(maybeId: Option[Int]= None) = {
 
-    familias
+    maybeId match {
+      case Some(id) => familias.filter(_.id ===id)
+      case None     => familias
+    }
+
   }
 
   def create( descripcion: String, observaciones:String ): Future[Familia] = db.run {

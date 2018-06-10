@@ -28,7 +28,8 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
       "apellidos" -> nonEmptyText,
       "nivel" -> number,
       "familia" -> number,
-      "id" -> number
+      "id" -> number,
+      "descuentoEspecial"-> text
     //  "age" -> number.verifying(min(0), max(140))
     )(CreateAlumnoForm.apply)(CreateAlumnoForm.unapply)
   }
@@ -86,12 +87,12 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
       // There were no errors in the from, so create the alumno.
       alumno => {
         if(alumno.id == null) {
-          alumnoDao.create(alumno.legajo, alumno.nombres, alumno.apellidos, alumno.familia, alumno.nivel).map { _ =>
+          alumnoDao.create(alumno.legajo, alumno.nombres, alumno.apellidos, alumno.familia, alumno.nivel, alumno.descuentoEspecial).map { _ =>
             // If successful, we simply redirect to the createAlumno page.
             Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Alumno Creado")
           }
         }else {
-            alumnoDao.update(alumno.id, alumno.legajo, alumno.nombres, alumno.apellidos, alumno.familia, alumno.nivel, true).map { _ =>
+            alumnoDao.update(alumno.id, alumno.legajo, alumno.nombres, alumno.apellidos, alumno.familia, alumno.nivel, true, alumno.descuentoEspecial).map { _ =>
               Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Alumno Creado")
             }
         }
@@ -130,10 +131,10 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
           for (contacto <-familia.contactos) {
 
             contactoDao.create(contacto.label, contacto.email.getOrElse(""),contacto.phones, f.id).map { _=>
-              Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Alumno Creado")
+              Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Familia Creada")
             }
           }
-          Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Alumno Creado")
+          Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Familia Cread")
         }
       }
     )
@@ -198,7 +199,7 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
   def borrar(id:Int) = Action.async { implicit request =>
     alumnoDao.findById(ec, id).flatMap { alumno =>
       val a = alumno.alumnos.head
-      alumnoDao.update(a.id, a.legajo, a.nombres, a.apellidos, alumno.id, a.nivel, false).map { r =>
+      alumnoDao.update(a.id, a.legajo, a.nombres, a.apellidos, alumno.id, a.nivel, false, a.descuentoEspecial).map { r =>
         Redirect(routes.AlumnoController.getAlumnos()).flashing("success" -> "Alumno dado de baja")
       }
     }
@@ -213,7 +214,7 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
   * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
   * that is generated once it's created.
   */
-case class CreateAlumnoForm( legajo: String, nombres: String, apellidos: String, nivel: Int, familia: Int, id: Int)
+case class CreateAlumnoForm( legajo: String, nombres: String, apellidos: String, nivel: Int, familia: Int, id: Int, descuentoEspecial: String)
 
 case class CreateFamiliaForm( descripcion: String, observaciones: String,  contactos:Seq[ContactoForm])
 case class ContactoForm(label: String, email: Option[String], phones: String)

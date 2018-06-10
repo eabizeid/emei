@@ -73,6 +73,8 @@ trait Tables {
 
     def activo = column[Boolean] ("activo")
 
+    def descuentoEspecial = column [String] ("descuentoEspecial")
+
     /**
       * This is the tables default "projection".
       *
@@ -81,7 +83,7 @@ trait Tables {
       * In this case, we are simply passing the id, name and page parameters to the Alumno case classes
       * apply and unapply methods.
       */
-    def * = (id, legajo, nombres, apellidos, nivel, familia, activo) <> ((Alumno.apply _).tupled, Alumno.unapply)
+    def * = (id, legajo, nombres, apellidos, nivel, familia, activo, descuentoEspecial) <> ((Alumno.apply _).tupled, Alumno.unapply)
 
     /*   def nivelGradoFk = foreignKey("nivel_grado_ibfk_1",
          nivel, TableQuery[NivelGrado])(n => n.id, onDelete = ForeignKeyAction.Cascade)
@@ -310,7 +312,7 @@ trait Tables {
   /**
     * The starting point for all queries on the anios table.
     */
-  private val tipoPagos = TableQuery[TipoPagoTable]
+  val tipoPagos = TableQuery[TipoPagoTable]
 
   //------------------------------------------------------------------------------
   //PAGO
@@ -336,6 +338,12 @@ trait Tables {
 
     def descuentoAplicado = column[Double]("descuento_aplicado")
 
+    def interes = column[Double]("interes")
+
+    def pagoParcial = column[Double] ("pagoParcial")
+
+    def resuelto = column[Boolean] ("resuelto")
+
     /**
       * This is the tables default "projection".
       *
@@ -344,7 +352,7 @@ trait Tables {
       * In this case, we are simply passing the id, name and page parameters to the Pago case classes
       * apply and unapply methods.
       */
-    def * = (id, recibo, cuota, tipoPago, familia, descuentoAplicado) <> ((Pago.apply _).tupled, Pago.unapply)
+    def * = (id, recibo, cuota, tipoPago, familia, descuentoAplicado, interes, pagoParcial, resuelto) <> ((Pago.apply _).tupled, Pago.unapply)
 
     /*def tipoPagoFk = foreignKey("to_tipo_pago_ibfk_1",
       tipoPago, TableQuery[TipoPago])(n => n.id, onDelete = ForeignKeyAction.Cascade)
@@ -360,7 +368,7 @@ trait Tables {
   /**
     * The starting point for all queries on the pagos table.
     */
-  private val pagos = TableQuery[PagosTable]
+   val pagos = TableQuery[PagosTable]
 
 
   //----------------------------------------------------
@@ -392,40 +400,9 @@ trait Tables {
   /**
     * The starting point for all queries on the anios table.
     */
-  private val cuotasbase = TableQuery[CuotaBaseTable]
+  val cuotasbase = TableQuery[CuotaBaseTable]
 
   //--------------------------------------------
-
-
-  //CUOTA
-
-  class CuotaTable(tag: Tag) extends Table[Cuota](tag, "cuota") {
-
-    /** The ID column, which is the primary key, and auto incremented */
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-
-
-    def cuotaBase = column[Int]("cuota_base")
-
-    def mes = column[Int]("mes")
-
-    def anio = column[Int]("anio")
-
-    /**
-      * This is the tables default "projection".
-      *
-      * It defines how the columns are converted to and from the Alumno object.
-      *
-      * In this case, we are simply passing the id, name and page parameters to the Alumno case classes
-      * apply and unapply methods.
-      */
-    def * = (id, cuotaBase, mes, anio) <> ((Cuota.apply _).tupled, Cuota.unapply)
-  }
-
-  /**
-    * The starting point for all queries on the anios table.
-    */
-  private val cuotas = TableQuery[CuotaTable]
 
 
   //-----------------------------------------------------------------
