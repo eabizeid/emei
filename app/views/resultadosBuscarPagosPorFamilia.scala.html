@@ -1,0 +1,56 @@
+@(familias: Seq[FamiliaApi])(implicit request: MessagesRequestHeader)
+
+@import helper._
+
+@request.flash.get("success").map { key =>
+    @request.messages(key)
+}
+
+
+@main("Alumnos") {
+    <div id="teaser">
+        <div class="wrap">
+            <div class="box">
+                <h2><em >Alumnos</em></h2>
+            </div>
+        </div>
+    </div>
+    <div  class="wrap">
+        <div class="search">
+
+        @for(familia <- familias) {
+
+            <h3>Familia: @familia.descripcion.toUpperCase</h3>
+            <h3>Observaciones: @familia.observaciones</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Legajo</th>
+                        <th scope="col">Nombres</th>
+                        <th scope="col">Apellidos</th>
+                        <th scope="col">Nivel</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(a <- familia.alumnos) {
+                    <tr>
+                        <td scope="row">@a.id</td>
+                        <td>@a.legajo</td>
+                        <td>@a.nombres</td>
+                        <td>@a.apellidos</td>
+                        <td>@a.nivel</td>
+                        <td><button class="btn btn-outline-success btn-sm" type="button"> <a  style="color:inherit" href="@routes.AlumnoController.modificar(a.id)">Modificar</a></button>
+                            <button type="button" class="btn btn-outline-danger btn-sm"> <a methods="DELETE" style="color:inherit" href="@routes.AlumnoController.borrar(a.id)">Borrar</a></button></td>
+                    </tr>
+                }
+                </tbody>
+
+            </table>
+
+        }
+        </div>
+    </div>
+
+}

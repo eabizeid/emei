@@ -1,0 +1,150 @@
+@(alumno: Form[CreateAlumnoForm], familia: Form[CreateFamiliaForm], familias: Seq[FamiliaApi], niveles: List[NivelApi], grados: List[GradoApi], nivelGrados: List[NivelGradoApi], familiasWithoutAlumnos: List[FamiliaApi])(implicit request: MessagesRequestHeader)
+
+    @import helper._
+
+
+    @request.flash.get("success").map { key =>
+        @request.messages(key)
+    }
+
+
+    @main("Alumnos") {
+
+    <div id="teaser">
+        <div class="wrap">
+            <div class="box">
+                <h2><em >Alumnos</em></h2>
+                <p>En esta sección podrá Consultar familias y Alumnos, como tambien dar de alta, modificar y eliminar</p>
+            </div>
+        </div>
+    </div>
+        <div class="buttons wrap">
+
+            <button id="buttonAlumno" class="btn btn-large btn-primary" type="button"  value="buscar">Agregar Alumno</button>
+            <button id="buttonFamilia" class="btn btn-large btn-primary" type="button" value="buscar">Agregar Familia</button>
+            <button id="buttonBuscar" class="btn btn-large btn-primary" type="button" value="buscar">Buscar</button>
+
+        </div>
+
+        <div id="agregar" class="wrap">
+            <div class="search">
+                <h3>Agregar <span class="red">Alumno </span></h3>
+            @form(routes.AlumnoController.addAlumno()){
+                <div class="form-row">
+                    @select(alumno("familia"), familiasWithoutAlumnos.sortBy(_.descripcion).map(f => f.id.toString -> f.descripcion), '_label -> "Familia", 'class -> "form-control", '_class -> "form-group col-md-6")
+                    @inputText(alumno("legajo"), '_label -> "Legajo", '_class -> "form-group col-md-6")
+                </div>
+                <div class="form-row">
+                    @inputText(alumno("nombres"), '_label -> "Nombres", '_class -> "form-group col-md-6")
+                    @inputText(alumno("apellidos"), '_label -> "Apellidos", '_class -> "form-group col-md-6")
+                </div>
+                <div class="form-row">
+
+                        @select(alumno("nivel"),nivelGrados.sortBy(_.nivel.nivel).map(n => n.id.toString -> s"${n.nivel.nivel} - ${n.grado.grado}"), '_label -> "Nivel", 'class -> "form-control", '_class -> "form-group col-md-6")
+
+                </div>
+                <div>
+                    <input id="id" type="hidden" name="id" value="@alumno.data.get("id")" />
+                </div>
+                @CSRF.formField
+
+                <div class="buttons">
+
+                    <button class="btn btn-large btn-primary" type="submit" value="buscar">Agregar Alumno</button>
+                    <button id="cancelAlumno" class="btn btn-large btn-danger" type="button">Cancelar</button>
+
+
+                </div>
+            }
+            </div>
+
+        </div>
+
+    <div id="agregarFamilia" class="wrap">
+        <div class="search">
+            <h3>Agregar <span class="red">Familia </span></h3>
+            @form(routes.AlumnoController.addFamilia()){
+                <div class="form-row">
+                    @inputText(familia("descripcion"), '_label -> "Descripcion", '_class -> "form-group col-md-6")
+                </div>
+                <div class="form-row">
+                    @textarea(familia("observaciones"), '_label -> "Observaciones", '_class -> "form-group col-md-6")
+                </div>
+                <div class="form-row">
+                @helper.repeat(familia("contactos"), min = 2) { contactField =>
+                    <div class="form-row">
+                        @helper.inputText(familia(contactField.name.toString + ".label"),'_label -> "Nombre Contacto ",   '_class -> "form-group col-md-4")
+                        @helper.inputText(familia(contactField.name.toString + ".email"), '_label -> "Correo electronico ", '_class -> "form-group col-md-4")
+                        @helper.inputText(familia(contactField.name.toString + ".phones"), '_label -> "Telefono ", '_class -> "form-group col-md-4" )
+                    </div>
+                }
+
+                </div>
+                @CSRF.formField
+
+                <div class="buttons">
+
+                    <button class="btn btn-large btn-primary" type="submit" value="buscar">Agregar Familia</button>
+                    <button id="cancelFamilia" class="btn btn-large btn-danger" type="button">Cancelar</button>
+
+
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div id="buscar" class="wrap">
+        <div class="search">
+            <h3>Bus<span class="red">car </span></h3>
+
+            @form(routes.AlumnoController.buscar()) {
+
+            <div class="form-group" >
+                <label for="familia">Familia</label>
+                <select class="form-control" name="familia" id="familia">
+                 <option value="">  </option>
+                @for( familia <- familias.sortBy(_.descripcion)) {
+                    <option value="@familia.id"> @familia.descripcion </option>
+                }
+                </select>
+
+
+            </div>
+                <div class="form-group">
+                    <label for="legajo" >Legajo</label>
+                    <input  class="form-control"  type="text" name="legajo" id="legajo">
+                </div>
+            <div class="form-group" >
+               <label for="nivel">Nivel</label>
+                <select class="form-control" name="nivel" id="nivel">
+                    <option value="">  </option>
+                @for( nivel <- niveles) {
+                    <option value="@nivel.id"> @nivel.nivel </option>
+                }
+                </select>
+            </div>
+
+            <div class="form-group" >
+                <label for="grado">Grado</label>
+                <select class="form-control" name="grado" id="grado">
+                    <option value="">  </option>
+                @for( grado <- grados) {
+                    <option value="@grado.id"> @grado.grado </option>
+                }
+                </select>
+            </div>
+
+            <br /> <br />
+            <br />
+            <div class="buttons">
+                <button class="btn btn-large btn-primary" type="submit" value="buscar">Buscar</button>
+                <button id="cancelBuscar" class="btn btn-large btn-danger" type="button">Cancelar</button>
+
+            </div>
+            }
+        </div>
+    </div>
+
+
+    }
