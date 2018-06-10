@@ -1,21 +1,87 @@
-2018-05-16 18:01:32,694 [INFO] from application in play-dev-mode-akka.actor.default-dispatcher-7 - ApplicationTimer demo: Starting application at 2018-05-16T21:01:32.692Z.
-2018-05-16 18:01:33,199 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-7 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+2018-06-10 19:34:30,536 [INFO] from application in play-dev-mode-akka.actor.default-dispatcher-8 - ApplicationTimer demo: Starting application at 2018-06-10T22:34:30.532Z.
+2018-06-10 19:34:31,460 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-8 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
 
     play.filters.csrf.CSRFFilter
     play.filters.headers.SecurityHeadersFilter
     play.filters.hosts.AllowedHostsFilter
-    filters.ExampleFilter
 
-2018-05-16 18:01:33,207 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-7 - Application started (Dev)
-2018-05-16 18:01:33,488 [WARN] from com.zaxxer.hikari.util.DriverDataSource in application-akka.actor.default-dispatcher-6 - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
-2018-05-16 18:01:34,160 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-1 - Preparing statement: select x2.x3, x2.x4, x2.x5, x2.x6, x2.x7, x2.x8, x2.x9, x10.`id`, x10.`nivel`, x10.`grado`, x11.`id`, x11.`descripcion`, x11.`observaciones` from (select `activo` as x9, `apellidos` as x6, `nivel_grado` as x7, `id` as x3, `familia` as x8, `legajo` as x4, `nombres` as x5 from `alumnos` where `activo` = true) x2, `nivel_grado` x10, `familia` x11 where (x2.x7 = x10.`id`) and (x2.x8 = x11.`id`) order by x11.`descripcion`
-2018-05-16 18:01:34,435 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-2 - Preparing statement: select `id`, `nivel` from `nivel`
-2018-05-16 18:01:34,485 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-3 - Preparing statement: select `id`, `grado` from `grado`
-2018-05-16 18:01:34,561 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-4 - Preparing statement: select x2.`id`, x2.`nivel`, x2.`grado`, x3.`id`, x3.`nivel`, x4.`id`, x4.`grado` from `nivel_grado` x2, `nivel` x3, `grado` x4 where (x2.`nivel` = x3.`id`) and (x2.`grado` = x4.`id`)
-2018-05-16 18:01:34,606 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-5 - Preparing statement: select `id`, `descripcion`, `observaciones` from `familia`
-2018-05-16 18:01:46,295 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-6 - Preparing statement: select x2.x3, x2.x4, x2.x5, x2.x6, x2.x7, x2.x8, x2.x9, x10.`id`, x10.`nivel`, x10.`grado`, x11.`id`, x11.`descripcion`, x11.`observaciones` from (select `activo` as x9, `apellidos` as x6, `nivel_grado` as x7, `id` as x3, `familia` as x8, `legajo` as x4, `nombres` as x5 from `alumnos` where `activo` = true) x2, `nivel_grado` x10, `familia` x11 where (x2.x7 = x10.`id`) and (x2.x8 = x11.`id`) order by x11.`descripcion`
-2018-05-16 18:01:49,699 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-7 - Preparing statement: select x2.x3, x2.x4, x2.x5, x2.x6, x2.x7, x2.x8, x2.x9, x10.`id`, x10.`nivel`, x10.`grado`, x11.`id`, x11.`descripcion`, x11.`observaciones` from (select `activo` as x9, `apellidos` as x6, `nivel_grado` as x7, `id` as x3, `familia` as x8, `legajo` as x4, `nombres` as x5 from `alumnos` where `activo` = true) x2, `nivel_grado` x10, `familia` x11 where (x2.x7 = x10.`id`) and (x2.x8 = x11.`id`) order by x11.`descripcion`
-2018-05-16 18:01:49,710 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-8 - Preparing statement: select `id`, `nivel` from `nivel`
-2018-05-16 18:01:49,729 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-9 - Preparing statement: select `id`, `grado` from `grado`
-2018-05-16 18:01:49,759 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-10 - Preparing statement: select x2.`id`, x2.`nivel`, x2.`grado`, x3.`id`, x3.`nivel`, x4.`id`, x4.`grado` from `nivel_grado` x2, `nivel` x3, `grado` x4 where (x2.`nivel` = x3.`id`) and (x2.`grado` = x4.`id`)
-2018-05-16 18:01:49,774 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-11 - Preparing statement: select `id`, `descripcion`, `observaciones` from `familia`
+2018-06-10 19:34:31,476 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-8 - Application started (Dev)
+2018-06-10 19:34:34,465 [ERROR] from application in application-akka.actor.default-dispatcher-3 - 
+
+! @788d0k7pi - Internal server error, for (GET) [/alumnos] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[SQLTransientConnectionException: db - Connection is not available, request timed out after 1002ms.]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:255)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:180)
+	at play.core.server.AkkaHttpServer$$anonfun$3.applyOrElse(AkkaHttpServer.scala:343)
+	at play.core.server.AkkaHttpServer$$anonfun$3.applyOrElse(AkkaHttpServer.scala:341)
+	at scala.concurrent.Future$$anonfun$recoverWith$1.apply(Future.scala:346)
+	at scala.concurrent.Future$$anonfun$recoverWith$1.apply(Future.scala:345)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:36)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch$$anonfun$run$1.apply$mcV$sp(BatchingExecutor.scala:91)
+	at akka.dispatch.BatchingExecutor$BlockableBatch$$anonfun$run$1.apply(BatchingExecutor.scala:91)
+	at akka.dispatch.BatchingExecutor$BlockableBatch$$anonfun$run$1.apply(BatchingExecutor.scala:91)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:72)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:90)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:40)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:43)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: java.sql.SQLTransientConnectionException: db - Connection is not available, request timed out after 1002ms.
+	at com.zaxxer.hikari.pool.HikariPool.createTimeoutException(HikariPool.java:548)
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:186)
+	at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:83)
+	at slick.jdbc.hikaricp.HikariCPJdbcDataSource.createConnection(HikariCPJdbcDataSource.scala:14)
+	at slick.jdbc.JdbcBackend$BaseSession.<init>(JdbcBackend.scala:438)
+	at slick.jdbc.JdbcBackend$DatabaseDef.createSession(JdbcBackend.scala:46)
+	at slick.jdbc.JdbcBackend$DatabaseDef.createSession(JdbcBackend.scala:37)
+	at slick.basic.BasicBackend$DatabaseDef$class.acquireSession(BasicBackend.scala:216)
+	at slick.jdbc.JdbcBackend$DatabaseDef.acquireSession(JdbcBackend.scala:37)
+	at slick.basic.BasicBackend$DatabaseDef$$anon$2.run(BasicBackend.scala:241)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Could not create connection to database server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:377)
+	at com.mysql.jdbc.Util.getInstance(Util.java:360)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:956)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:935)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:924)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:870)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2311)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2064)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:790)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:44)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
+	at java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:377)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:395)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:325)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:95)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:101)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:341)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:193)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:430)
+	at com.zaxxer.hikari.pool.HikariPool.access$500(HikariPool.java:64)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:570)
+	at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:563)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	... 3 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at com.mysql.jdbc.ConnectionImpl.getServerCharset(ConnectionImpl.java:2983)
+	at com.mysql.jdbc.MysqlIO.sendConnectionAttributes(MysqlIO.java:1873)
+	at com.mysql.jdbc.MysqlIO.proceedHandshakeWithPluggableAuthentication(MysqlIO.java:1802)
+	at com.mysql.jdbc.MysqlIO.doHandshake(MysqlIO.java:1206)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2234)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2265)
+	... 22 common frames omitted
