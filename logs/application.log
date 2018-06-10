@@ -1,0 +1,21 @@
+2018-05-16 18:01:32,694 [INFO] from application in play-dev-mode-akka.actor.default-dispatcher-7 - ApplicationTimer demo: Starting application at 2018-05-16T21:01:32.692Z.
+2018-05-16 18:01:33,199 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-7 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.csrf.CSRFFilter
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2018-05-16 18:01:33,207 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-7 - Application started (Dev)
+2018-05-16 18:01:33,488 [WARN] from com.zaxxer.hikari.util.DriverDataSource in application-akka.actor.default-dispatcher-6 - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2018-05-16 18:01:34,160 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-1 - Preparing statement: select x2.x3, x2.x4, x2.x5, x2.x6, x2.x7, x2.x8, x2.x9, x10.`id`, x10.`nivel`, x10.`grado`, x11.`id`, x11.`descripcion`, x11.`observaciones` from (select `activo` as x9, `apellidos` as x6, `nivel_grado` as x7, `id` as x3, `familia` as x8, `legajo` as x4, `nombres` as x5 from `alumnos` where `activo` = true) x2, `nivel_grado` x10, `familia` x11 where (x2.x7 = x10.`id`) and (x2.x8 = x11.`id`) order by x11.`descripcion`
+2018-05-16 18:01:34,435 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-2 - Preparing statement: select `id`, `nivel` from `nivel`
+2018-05-16 18:01:34,485 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-3 - Preparing statement: select `id`, `grado` from `grado`
+2018-05-16 18:01:34,561 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-4 - Preparing statement: select x2.`id`, x2.`nivel`, x2.`grado`, x3.`id`, x3.`nivel`, x4.`id`, x4.`grado` from `nivel_grado` x2, `nivel` x3, `grado` x4 where (x2.`nivel` = x3.`id`) and (x2.`grado` = x4.`id`)
+2018-05-16 18:01:34,606 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-5 - Preparing statement: select `id`, `descripcion`, `observaciones` from `familia`
+2018-05-16 18:01:46,295 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-6 - Preparing statement: select x2.x3, x2.x4, x2.x5, x2.x6, x2.x7, x2.x8, x2.x9, x10.`id`, x10.`nivel`, x10.`grado`, x11.`id`, x11.`descripcion`, x11.`observaciones` from (select `activo` as x9, `apellidos` as x6, `nivel_grado` as x7, `id` as x3, `familia` as x8, `legajo` as x4, `nombres` as x5 from `alumnos` where `activo` = true) x2, `nivel_grado` x10, `familia` x11 where (x2.x7 = x10.`id`) and (x2.x8 = x11.`id`) order by x11.`descripcion`
+2018-05-16 18:01:49,699 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-7 - Preparing statement: select x2.x3, x2.x4, x2.x5, x2.x6, x2.x7, x2.x8, x2.x9, x10.`id`, x10.`nivel`, x10.`grado`, x11.`id`, x11.`descripcion`, x11.`observaciones` from (select `activo` as x9, `apellidos` as x6, `nivel_grado` as x7, `id` as x3, `familia` as x8, `legajo` as x4, `nombres` as x5 from `alumnos` where `activo` = true) x2, `nivel_grado` x10, `familia` x11 where (x2.x7 = x10.`id`) and (x2.x8 = x11.`id`) order by x11.`descripcion`
+2018-05-16 18:01:49,710 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-8 - Preparing statement: select `id`, `nivel` from `nivel`
+2018-05-16 18:01:49,729 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-9 - Preparing statement: select `id`, `grado` from `grado`
+2018-05-16 18:01:49,759 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-10 - Preparing statement: select x2.`id`, x2.`nivel`, x2.`grado`, x3.`id`, x3.`nivel`, x4.`id`, x4.`grado` from `nivel_grado` x2, `nivel` x3, `grado` x4 where (x2.`nivel` = x3.`id`) and (x2.`grado` = x4.`id`)
+2018-05-16 18:01:49,774 [DEBUG] from slick.jdbc.JdbcBackend.statement in db-11 - Preparing statement: select `id`, `descripcion`, `observaciones` from `familia`
