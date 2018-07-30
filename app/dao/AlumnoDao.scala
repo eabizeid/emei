@@ -24,7 +24,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
           case (familiaRow, tuples ) =>
             val alumnos = tuples.map(_._1).map {a =>
               AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel, a.descuentoEspecial)}
-            FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos)
+            FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos, familiaRow.deuda)
         }.toList
         familias
       }
@@ -39,7 +39,7 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
             val alumnos = tuples.map(_._1).map {a =>
 
               AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel, a.descuentoEspecial)}
-            FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos)
+            FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos, familiaRow.deuda)
         }.toList
         familias.head
     }
@@ -55,8 +55,8 @@ class AlumnoDao @Inject() (protected val dbConfigProvider: DatabaseConfigProvide
             val alumnos = tuples.map(_._1).map {a =>
               AlumnoApi(a.id, a.legajo, a.nombres, a.apellidos, a.nivel, a.descuentoEspecial)
             }
-            FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos)
-        }.toList
+            FamiliaApi(familiaRow.id, familiaRow.descripcion, familiaRow.observaciones, alumnos, familiaRow.deuda)
+        }.  toList
         familias
     }
   }
