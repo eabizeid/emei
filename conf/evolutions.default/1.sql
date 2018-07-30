@@ -18,7 +18,7 @@
 --
 -- Table structure for table `alumnos`
 --
-use emei;
+
 DROP TABLE IF EXISTS `alumnos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -30,6 +30,7 @@ CREATE TABLE `alumnos` (
   `nivel_grado` int(11) DEFAULT NULL,
   `familia` int(11) NOT NULL,
   `activo` varchar(45) DEFAULT '1',
+  `descuentoEspecial` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `alumnos_ibfk_1_idx` (`familia`),
   KEY `alumnos_ibfk_2` (`nivel_grado`),
@@ -103,12 +104,8 @@ CREATE TABLE `cuota_base` (
   `valor` double NOT NULL,
   `anio` int(11) NOT NULL,
   `mes` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `anio` (`anio`),
-  KEY `mes` (`mes`),
-  CONSTRAINT `cuota_base_ibfk_1` FOREIGN KEY (`anio`) REFERENCES `anio` (`id`),
-  CONSTRAINT `cuota_base_ibfk_2` FOREIGN KEY (`mes`) REFERENCES `mes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,8 +119,9 @@ CREATE TABLE `familia` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
   `observaciones` varchar(255) NOT NULL,
+  `deuda` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,13 +186,13 @@ CREATE TABLE `nivel_grado` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `pago`
+-- Table structure for table `pagos`
 --
 
-DROP TABLE IF EXISTS `pago`;
+DROP TABLE IF EXISTS `pagos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pago` (
+CREATE TABLE `pagos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `recibo` varchar(255) NOT NULL,
   `descuento_aplicado` double DEFAULT NULL,
@@ -202,14 +200,14 @@ CREATE TABLE `pago` (
   `familia` int(11) NOT NULL,
   `cuota` int(11) NOT NULL,
   `interes` double DEFAULT NULL,
+  `pagoParcial` double DEFAULT NULL,
+  `resuelto` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `tipo_pago` (`tipo_pago`),
   KEY `familia` (`familia`),
-  KEY `cuota` (`cuota`),
-  CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`tipo_pago`) REFERENCES `tipo_pago` (`id`),
-  CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`familia`) REFERENCES `familia` (`id`),
-  CONSTRAINT `pago_ibfk_3` FOREIGN KEY (`cuota`) REFERENCES `cuota` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `pagos_ibfk_3_idx` (`cuota`),
+  CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`familia`) REFERENCES `familia` (`id`),
+  CONSTRAINT `pagos_ibfk_3` FOREIGN KEY (`cuota`) REFERENCES `cuota_base` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,4 +247,4 @@ CREATE TABLE `tipo_pago` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-15 15:56:57
+-- Dump completed on 2018-07-30 15:29:33
