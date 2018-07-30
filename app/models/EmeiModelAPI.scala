@@ -21,7 +21,7 @@ case class NivelGradoApi(id: Int, nivel: NivelApi, grado: GradoApi )
 
 case class AlumnoApi(id:Int, legajo: String, nombres: String, apellidos: String, nivel: Int, descuentoEspecial: String)
 
-case class FamiliaApi(id: Int, descripcion: String, observaciones: String, alumnos: Seq[AlumnoApi])
+case class FamiliaApi(id: Int, descripcion: String, observaciones: String, alumnos: Seq[AlumnoApi], deuda: Double)
 
 case class PagoApi (id: Int, recibo: String, valorCuotaBase: Double, mesCuota: Int, anioCuota:Int, tipoPago: String, familia: String, descuentoAplicado: Double, interes:Double, pagoParcial: Double, resuelto:Boolean)
 

@@ -19,7 +19,7 @@ class FamiliaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
     db.run(getFamilias().result ) map {
       dataTuples =>
         val familias = dataTuples.map { f =>
-          FamiliaApi(f.id, f.descripcion, f.observaciones, List())
+          FamiliaApi(f.id, f.descripcion, f.observaciones, List(), f.deuda)
         }
         familias.toList
     }
@@ -29,7 +29,7 @@ class FamiliaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
     db.run(getFamilias(Some(id)).result) map   {
       dataTuples =>
         val familias = dataTuples.map { f =>
-          FamiliaApi(f.id, f.descripcion, f.observaciones, List())
+          FamiliaApi(f.id, f.descripcion, f.observaciones, List(), f.deuda)
         }
         familias.toList
     }
@@ -44,17 +44,17 @@ class FamiliaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
 
   }
 
-  def create( descripcion: String, observaciones:String ): Future[Familia] = db.run {
+  def create( descripcion: String, observaciones:String, deuda: Double ): Future[Familia] = db.run {
     // We create a projection of just the anio, since we're not inserting a value for the id column
 
-    (familias.map(f => (f.descripcion, f.observaciones))
+    (familias.map(f => (f.descripcion, f.observaciones, f.deuda))
       // Now define it to return the id, because we want to know what id was generated for the Alumno
       returning familias.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into ((tupla, id) => Familia(id, tupla._1, tupla._2))
+      into ((tupla, id) => Familia(id, tupla._1, tupla._2, tupla._3))
       // And finally, insert the Familia into the database
-      ) += (descripcion, observaciones)
+      ) += (descripcion, observaciones, deuda)
 
 
 

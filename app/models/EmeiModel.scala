@@ -21,7 +21,7 @@ case class Phone(id: Int, number: String, contactoId: Int)
 
 case class NivelGrado(id: Int, nivel: Int, grado: Int )
 
-case class Familia(id: Int, descripcion: String, observaciones: String)
+case class Familia(id: Int, descripcion: String, observaciones: String, deuda: Double)
 
 case class Alumno(id:Int, legajo: String, nombres: String, apellidos: String, nivel: Int, familia: Int, activo: Boolean, descuentoEspecial: String)
 

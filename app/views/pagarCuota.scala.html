@@ -24,6 +24,7 @@
                 @inputText(buscarForm("valorCuotaBase"))
                 <button class="btn btn-large btn-primary" type="submit" value="buscar">Obligacion de pago mensual</button>
             }
+            <hr/>
             <h3>Consultar pagos pendientes por familia</h3>
             @form(routes.PagoController.buscar()) {
                 <div class="form-row">
@@ -31,7 +32,12 @@
                 </div>
                 <button class="btn btn-large btn-primary" type="submit" value="buscar">Buscar</button>
             }
+            <hr />
+            <div class="buttons">
 
+                <button id="buttonAlumno" class="btn btn-large btn-primary" type="button"  value="buscar">Agregar deuda anterior</button>
+                <button id="buttonFamilia" class="btn btn-large btn-primary" type="button" value="buscar">Consultar deuda anterior</button>
+            </div>
         </div>
 
 

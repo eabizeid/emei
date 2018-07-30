@@ -18,7 +18,7 @@ GET     /alumnos                     controllers.AlumnoController.getAlumnos
 GET     /alumnos/:id                 controllers.AlumnoController.modificar(id: Int)
 GET  /alumnos/deactivate/:id         controllers.AlumnoController.borrar(id: Int)
 
-GET      /pagosFamilia               controllers.PagoController.showPagarCuota
+GET      /pagos                      controllers.PagoController.showPagarCuota
 + nocsrf
 POST     /buscarCuotas               controllers.PagoController.buscar
 + nocsrf

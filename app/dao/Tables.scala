@@ -26,6 +26,8 @@ trait Tables {
     /** The age column */
     def observaciones = column[String]("observaciones")
 
+    def deuda = column[Double]("deuda")
+
     /**
       * This is the tables default "projection".
       *
@@ -34,7 +36,7 @@ trait Tables {
       * In this case, we are simply passing the id, name and page parameters to the Alumno case classes
       * apply and unapply methods.
       */
-    def * = (id, descripcion, observaciones) <> ((Familia.apply _).tupled, Familia.unapply)
+    def * = (id, descripcion, observaciones, deuda) <> ((Familia.apply _).tupled, Familia.unapply)
   }
 
   /**
