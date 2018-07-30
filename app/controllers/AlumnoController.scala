@@ -126,7 +126,7 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
       },
       // There were no errors in the from, so create the alumno.
       familia => {
-        familiaDao.create(familia.descripcion, familia.observaciones).map { f =>
+        familiaDao.create(familia.descripcion, familia.observaciones, 0D).map { f =>
           // If successful, we simply redirect to the createAlumno page.
           for (contacto <-familia.contactos) {
 
