@@ -28,7 +28,7 @@ class AlumnoController @Inject()(alumnoDao: AlumnoDao,nivelDao: NivelDao, gradoD
       "apellidos" -> nonEmptyText,
       "nivel" -> number,
       "familia" -> number,
-      "id" -> number,
+      "id" -> default(number, 0),
       "descuentoEspecial"-> text
     //  "age" -> number.verifying(min(0), max(140))
     )(CreateAlumnoForm.apply)(CreateAlumnoForm.unapply)
