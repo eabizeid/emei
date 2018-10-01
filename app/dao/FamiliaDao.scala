@@ -44,6 +44,17 @@ class FamiliaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
 
   }
 
+
+  def getDeudores(implicit ec: ExecutionContext) = {
+   db.run(getFamilias(None).filter(_.deuda > 0d).result) map {
+     tuples =>
+       val familias = tuples.map { f=>
+         FamiliaApi(f.id, f.descripcion, f.observaciones, List(), f.deuda)
+     }
+       familias.toList
+   }
+  }
+
   def create( descripcion: String, observaciones:String, deuda: Double ): Future[Familia] = db.run {
     // We create a projection of just the anio, since we're not inserting a value for the id column
 
@@ -56,8 +67,10 @@ class FamiliaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvide
       // And finally, insert the Familia into the database
       ) += (descripcion, observaciones, deuda)
 
+  }
 
-
+  def update(id: Int, descripcion: String, observaciones:String, deuda: Double ) = db.run{
+    familias.insertOrUpdate(Familia(id, descripcion, observaciones, deuda))
   }
 
 }

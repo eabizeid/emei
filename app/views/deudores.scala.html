@@ -1,0 +1,52 @@
+@(familias: List[FamiliaApi])(implicit request: MessagesRequestHeader)
+
+    @import helper._
+
+
+    @request.flash.get("success").map { key =>
+        @request.messages(key)
+    }
+
+
+    @main("Deudores") {
+
+    <div id="teaser">
+        <div class="wrap">
+            <div class="box">
+                <h2><em >Deudores</em></h2>
+                <p>Informacion de deudores</p>
+            </div>
+        </div>
+    </div>
+    @form(routes.PagoController.realizarPago()) {
+        <div class="wrap">
+
+            <div class="form-row">
+
+            </div>
+            <div class="form-row">
+                <h3>Familias</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Descripcion</th>
+                        <th>Observaciones</th>
+                        <th>Deuda</th>
+                    </thead>
+                    <tbody>
+                    @for(f <- familias) {
+                        <tr>
+                            <td>@f.descripcion</td>
+                            <td>@f.observaciones</td>
+                            <td>@f.deuda</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    }
+
+
+
+    }

@@ -1,3 +1,8 @@
+
+$.fn.nval = function() {
+    return Number(this.val())
+};
+
 $(document).ready(function() {
     $("#agregar").hide();
     $("#agregarFamilia").hide();
@@ -11,8 +16,31 @@ $(document).ready(function() {
     if ($("#id").val() &&  $("#id").val() != "") {
         $("#agregar").show()
     }
+
+    $("#buttonAgregarDeuda").on("click", agregarDeudaAnterior);
+    $("#buttonVerDeudores").on("click", verDeudores);
+
+
+    $("#descuentoHermano").on('input',function() {
+
+        var totalAPagar = $("#totalSinDescuento").nval() - $("#descuentoEspecial").nval() - $("#descuentoHermano").nval() + $("#interes").nval()
+        $("#totalAPagar").val(totalAPagar)
+    })
+        $("#descuentoEspecial").on('input', function() {
+
+            var totalAPagar = $("#totalSinDescuento").nval() - $("#descuentoEspecial").nval() - $("#descuentoHermano").nval() + $("#interes").nval()
+            $("#totalAPagar").val(totalAPagar)
+        })
+        $("#interes").on('input', function() {
+
+            var totalAPagar = $("#totalSinDescuento").nval() - $("#descuentoEspecial").nval() - $("#descuentoHermano").nval() + $("#interes").nval()
+            $("#totalAPagar").val(totalAPagar)
+        })
 }
 );
+
+
+
 
 var showAlumno = function(){
     $("#agregar").show()
@@ -45,3 +73,14 @@ var hideAllDivs = function() {
 var modificarAlumno = function(identificador) {
 
 }
+
+var agregarDeudaAnterior = function () {
+    $('#formBuscar').attr('action', "/deudaAnterior")
+    $("#formBuscar").submit();
+}
+
+var verDeudores  = function () {
+    $('#formBuscar').attr('action', "/verDeudores")
+    $("#formBuscar").submit();
+}
+

@@ -27,4 +27,10 @@ case class Alumno(id:Int, legajo: String, nombres: String, apellidos: String, ni
 
 case class CuotaBase (id: Int, valor: Double, anio: Int, mes: Int)
 
-case class Pago (id: Int, recibo: String, cuota: Int, tipoPago: Int, familia: Int, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean )
+case class Pago (id: Int, recibo: String, cuota: Int, totalSinDescuento: Double, tipoPago: Int, familia: Int, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean )
+
+case class Inscripcion(id: Int, anio: Int, valor: Double )
+
+case class PagoInscripcion(id:Int, inscripcion: Int,  totalSinDescuento: Double, tipoPago: Int, familia: Int, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean)
+
+

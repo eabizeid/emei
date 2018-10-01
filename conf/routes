@@ -20,14 +20,32 @@ GET  /alumnos/deactivate/:id         controllers.AlumnoController.borrar(id: Int
 
 GET      /pagos                      controllers.PagoController.showPagarCuota
 + nocsrf
+POST    /deudaAnterior               controllers.PagoController.showCargarDeudaAnterior
++ nocsrf
+POST    /cargarDeudaAnterior         controllers.PagoController.cargarDeudaAnterior
++ nocsrf
 POST     /buscarCuotas               controllers.PagoController.buscar
+
++ nocsrf
+POST     /buscarInscripciones        controllers.PagoController.buscarInscripcionesPendientes
+
++ nocsrf
+POST     /verDeudores                controllers.PagoController.consultarDeudores
 + nocsrf
 POST     /generarObligacionMensual   controllers.PagoController.generarObligacionDePagoMensual
++ nocsrf
+POST     /generarInscripcion         controllers.PagoController.generarInscripcion
 + nocsrf
 POST     /generarPago                controllers.PagoController.generarPago
 
 + nocsrf
+POST     /generarPagoInscripcion                controllers.PagoController.generarPagoInscripcion
+
++ nocsrf
 POST     /realizarPago                controllers.PagoController.realizarPago
+
++ nocsrf
+POST     /realizarPagoInscripcion               controllers.PagoController.realizarPagoInscripcion
 
 + nocsrf
 POST     /buscar                     controllers.AlumnoController.buscar

@@ -236,6 +236,38 @@ CREATE TABLE `tipo_pago` (
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+DROP TABLE IF EXISTS `inscripcion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inscripcion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `valor` double NOT NULL,
+  `anio` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `pago_inscripcion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `inscripcion` int(11) NOT NULL,
+  `tipo_pago` int(11) NOT NULL,
+  `familia` int(11) NOT NULL,
+  `descuento_aplicado` double DEFAULT NULL,
+  `interes` double DEFAULT NULL,
+  `pagoParcial` double DEFAULT NULL,
+  `resuelto` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `familia` (`familia`),
+  KEY `pagos_ibfk_3_idx` (`inscripcion`),
+  CONSTRAINT `pagos_ibfk_2` FOREIGN KEY (`familia`) REFERENCES `familia` (`id`),
+  CONSTRAINT `pagos_ibfk_3` FOREIGN KEY (`inscripcion`) REFERENCES `inscripcion` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

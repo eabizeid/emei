@@ -1,4 +1,4 @@
-@(pagos: Seq[PagoApi])(implicit request: MessagesRequestHeader)
+@(inscripciones: Seq[PagoInscripcionApi])(implicit request: MessagesRequestHeader)
 
 @import helper._
 
@@ -11,35 +11,33 @@
     <div id="teaser">
         <div class="wrap">
             <div class="box">
-                <h2><em >Pagos Pendientes</em></h2>
+                <h2><em >Inscripciones Pendientes</em></h2>
             </div>
         </div>
     </div>
     <div  class="wrap">
         <div class="search">
-        @form(routes.PagoController.generarPago()) {
+        @form(routes.PagoController.generarPagoInscripcion()) {
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Año</th>
-                        <th scope="col">Mes</th>
-                        <th scope="col">Valor Cuota Base</th>
-                        <th scope="col">Total Cuota</th>
+                        <th scope="col">Valor Inscripcion</th>
+                        <th scope="col">Total Inscripcion</th>
                         <th scope="col">Pago Parcial</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                @for(pago <- pagos) {
+                @for(inscripcion <- inscripciones) {
                     <tr>
                         <td></td>
-                        <td>@pago.anioCuota</td>
-                        <td>@pago.mesCuota</td>
-                        <td>@pago.valorCuotaBase</td>
-                        <td>@pago.totalSinDescuento</td>
-                        <td>@pago.pagoParcial</td>
-                        <td><input type="checkbox" name="cuotasAPagar" value="@pago.id" /> </td>
+                        <td>@inscripcion.anio</td>
+                        <td>@inscripcion.monto</td>
+                        <td>@inscripcion.totalSinDescuento</td>
+                        <td>@inscripcion.pagoParcial</td>
+                        <td><input type="checkbox" name="inscripcionesAPagar" value="@inscripcion.id" /> </td>
                     </tr>
                 }
                 </tbody>

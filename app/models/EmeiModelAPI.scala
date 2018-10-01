@@ -23,9 +23,13 @@ case class AlumnoApi(id:Int, legajo: String, nombres: String, apellidos: String,
 
 case class FamiliaApi(id: Int, descripcion: String, observaciones: String, alumnos: Seq[AlumnoApi], deuda: Double)
 
-case class PagoApi (id: Int, recibo: String, valorCuotaBase: Double, mesCuota: Int, anioCuota:Int, tipoPago: String, familia: String, descuentoAplicado: Double, interes:Double, pagoParcial: Double, resuelto:Boolean)
+case class PagoApi (id: Int, recibo: String, valorCuotaBase: Double, totalSinDescuento: Double,  mesCuota: Int, anioCuota:Int, tipoPago: String, familia: String, descuentoAplicado: Double, interes:Double, pagoParcial: Double, resuelto:Boolean)
 
 case class CuotaApi(id: Int, mes: Int, anio: Int, valorBase: Double)
+
+case class PagoInscripcionApi(id:Int, monto: Double, totalSinDescuento: Double,  anio: Int, tipoPago: String, familia:String, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean)
+
+case class InscripcionApi(id: Int, anio: Int, valor: Double)
 
 object NivelApi {
   implicit val alumnoFormat = Json.format[NivelApi]

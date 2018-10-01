@@ -331,6 +331,7 @@ trait Tables {
     /** The name column */
     def cuota = column[Int]("cuota")
 
+    def totalSinDescuento = column[Double]("total_sin_descuentos")
 
     /** The name column */
     def tipoPago = column[Int]("tipo_pago")
@@ -354,7 +355,7 @@ trait Tables {
       * In this case, we are simply passing the id, name and page parameters to the Pago case classes
       * apply and unapply methods.
       */
-    def * = (id, recibo, cuota, tipoPago, familia, descuentoAplicado, interes, pagoParcial, resuelto) <> ((Pago.apply _).tupled, Pago.unapply)
+    def * = (id, recibo, cuota, totalSinDescuento, tipoPago, familia, descuentoAplicado, interes, pagoParcial, resuelto) <> ((Pago.apply _).tupled, Pago.unapply)
 
     /*def tipoPagoFk = foreignKey("to_tipo_pago_ibfk_1",
       tipoPago, TableQuery[TipoPago])(n => n.id, onDelete = ForeignKeyAction.Cascade)
@@ -404,13 +405,57 @@ trait Tables {
     */
   val cuotasbase = TableQuery[CuotaBaseTable]
 
-  //--------------------------------------------
+   //--------------------------------------------
+  //Inscripcion
 
+  class Inscripciontable(tag: Tag) extends Table[Inscripcion](tag, _tableName="inscripcion") {
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def valor = column[Double]("valor")
+    def anio = column[Int]("anio")
+
+    def * = (id, anio, valor)<> ((Inscripcion.apply _).tupled, Inscripcion.unapply)
+
+  }
+
+  val inscripcion = TableQuery[Inscripciontable]
 
   //-----------------------------------------------------------------
 
+  //PAGO
 
+  class PagoInscripcionTable(tag: Tag) extends Table[PagoInscripcion](tag, "pago_inscripcion") {
 
+    /** The ID column, which is the primary key, and auto incremented */
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+
+    def inscripcion = column[Int] ("inscripcion")
+
+    def totalSinDescuento = column[Double]("total_sin_descuentos")
+
+    def tipoPago = column[Int]("tipo_pago")
+
+    def familia = column[Int]("familia")
+
+    def descuentoAplicado = column[Double]("descuento_aplicado")
+
+    def interes = column[Double]("interes")
+
+    def pagoParcial = column[Double]("pagoParcial")
+
+    def resuelto = column[Boolean]("resuelto")
+
+    /**
+      * This is the tables default "projection".
+      *
+      * It defines how the columns are converted to and from the Pago object.
+      *
+      * In this case, we are simply passing the id, name and page parameters to the Pago case classes
+      * apply and unapply methods.
+      */
+    def * = (id, inscripcion, totalSinDescuento, tipoPago, familia, descuentoAplicado, interes, pagoParcial, resuelto) <> ((PagoInscripcion.apply _).tupled, PagoInscripcion.unapply)
+  }
+
+  val pagoInscripcion = TableQuery[PagoInscripcionTable]
   //-----------------------------------------------------------------
 
 }

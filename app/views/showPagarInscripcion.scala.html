@@ -13,12 +13,12 @@
     <div id="teaser">
         <div class="wrap">
             <div class="box">
-                <h2><em >Cuotas</em></h2>
-                <p>Informacionsobre el pago a realizar</p>
+                <h2><em >Inscripciones</em></h2>
+                <p>Informacion sobre el pago a realizar</p>
             </div>
         </div>
     </div>
-    @form(routes.PagoController.realizarPago()) {
+    @form(routes.PagoController.realizarPagoInscripcion()) {
         <div class="wrap">
 
             <div class="form-row">
@@ -50,6 +50,7 @@
             </div>
         </div>
         <div class="wrap">
+
             <div class="form-row">
                 <span>@inputText(pagoForm("descuentoHermano"), '_label -> "Descuento hno.", '_class -> "form-group col-md-6")</span>
                 <span>@inputText(pagoForm("descuentoEspecial"), '_label -> "Descuento especial", '_class -> "form-group col-md-6")</span>
@@ -83,8 +84,9 @@
 
 
 
-
         </div>
     }
+
+
 
     }
