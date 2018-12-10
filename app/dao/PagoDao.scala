@@ -116,24 +116,24 @@ class PagoDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) 
     filtroPagosPorFamiliayCOnPagosParcialesConCuotasYTipoPago
   }
 
-  def resolver(id:Int, totalAPagar: Double, descuentoAplicado: Double, interes: Double) = db.run{
-    val q = for { c <- pagos if c.id === id } yield (c.resuelto, c.pagoParcial, c.descuentoAplicado, c.interes)
-    q.update(true, totalAPagar, descuentoAplicado, interes)
+  def resolver(id:Int, totalAPagar: Double, descuentoAplicado: Double, interes: Double, recibo: String) = db.run{
+    val q = for { c <- pagos if c.id === id } yield (c.resuelto, c.pagoParcial, c.descuentoAplicado, c.interes, c.recibo)
+    q.update(true, totalAPagar, descuentoAplicado, interes, recibo)
   }
 
-  def resolverParcial(id:Int, pagoParcial: Double) = db.run{
-    val q = for { c <- pagos if c.id === id } yield c.pagoParcial
-    q.update(pagoParcial)
+  def resolverParcial(id:Int, pagoParcial: Double, recibo: String) = db.run{
+    val q = for { c <- pagos if c.id === id } yield (c.pagoParcial, c.recibo)
+    q.update(pagoParcial, recibo)
   }
 
-  def resolverInscripcion(id:Int, totalAPagar: Double, descuentoAplicado: Double, interes: Double) = db.run{
-    val q = for { c <- pagoInscripcion if c.id === id } yield (c.resuelto, c.pagoParcial, c.descuentoAplicado, c.interes)
-    q.update(true, totalAPagar, descuentoAplicado, interes)
+  def resolverInscripcion(id:Int, totalAPagar: Double, descuentoAplicado: Double, interes: Double, recibo: String) = db.run{
+    val q = for { c <- pagoInscripcion if c.id === id } yield (c.resuelto, c.pagoParcial, c.descuentoAplicado, c.interes, c.recibo)
+    q.update(true, totalAPagar, descuentoAplicado, interes, recibo)
   }
 
-  def resolverInscripcionParcial(id:Int, pagoParcial: Double) = db.run{
-    val q = for { c <- pagoInscripcion if c.id === id } yield c.pagoParcial
-    q.update(pagoParcial)
+  def resolverInscripcionParcial(id:Int, pagoParcial: Double, recibo: String) = db.run{
+    val q = for { c <- pagoInscripcion if c.id === id } yield (c.pagoParcial, recibo)
+    q.update(pagoParcial, recibo)
   }
 
   def create(cuota: Int, familia:Int, total:Double): Future[Pago] = db.run {
@@ -155,14 +155,14 @@ class PagoDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) 
   def createPagoInscripcion(inscripcion: Int, familia:Int, total: Double): Future[PagoInscripcion] = db.run {
     // We create a projection of just the anio, since we're not inserting a value for the id column
 
-    (pagoInscripcion.map(p => ( p.inscripcion, p.totalSinDescuento, p.tipoPago, p.familia, p.descuentoAplicado, p.interes, p.pagoParcial, p.resuelto))
+    (pagoInscripcion.map(p => ( p.inscripcion, p.totalSinDescuento, p.tipoPago, p.familia, p.descuentoAplicado, p.interes, p.pagoParcial, p.resuelto, p.recibo))
       // Now define it to return the id, because we want to know what id was generated for the Alumno
       returning pagoInscripcion.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into ((tupla, id) => PagoInscripcion(id,tupla._1, tupla._2,tupla._3,tupla._4,tupla._5,tupla._6,tupla._7, tupla._8))
+      into ((tupla, id) => PagoInscripcion(id,tupla._1, tupla._2,tupla._3,tupla._4,tupla._5,tupla._6,tupla._7, tupla._8, tupla._9))
       // And finally, insert the Familia into the database
-      ) += (inscripcion, total, 0, familia, 0, 0, 0, false)
+      ) += (inscripcion, total, 0, familia, 0, 0, 0, false, "")
 
 
 

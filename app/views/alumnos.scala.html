@@ -3,10 +3,6 @@
     @import helper._
 
 
-    @request.flash.get("success").map { key =>
-        @request.messages(key)
-    }
-
 
     @main("Alumnos") {
 
@@ -25,6 +21,13 @@
             <button id="buttonBuscar" class="btn btn-large btn-primary" type="button" value="buscar">Buscar</button>
 
         </div>
+    <div class="wrap">
+    @request.flash.get("success").map { key =>
+        <div class="alert alert-success" role="alert">
+            @request.messages(key)
+        </div>
+    }
+    </div>
 
         <div id="agregar" class="wrap">
             <div class="search">

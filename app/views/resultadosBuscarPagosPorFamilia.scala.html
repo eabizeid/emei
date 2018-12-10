@@ -2,11 +2,6 @@
 
 @import helper._
 
-@request.flash.get("success").map { key =>
-    @request.messages(key)
-}
-
-
 @main("Alumnos") {
     <div id="teaser">
         <div class="wrap">
@@ -15,6 +10,15 @@
             </div>
         </div>
     </div>
+
+    <div class="wrap">
+    @request.flash.get("success").map { key =>
+        <div class="alert alert-success" role="alert">
+            @request.messages(key)
+        </div>
+    }
+    </div>
+
     <div  class="wrap">
         <div class="search">
         @form(routes.PagoController.generarPago()) {
@@ -27,6 +31,8 @@
                         <th scope="col">Valor Cuota Base</th>
                         <th scope="col">Total Cuota</th>
                         <th scope="col">Pago Parcial</th>
+                        <th scope="col">recibo</th>
+                        <th scope="col">tipo pago</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -39,6 +45,8 @@
                         <td>@pago.valorCuotaBase</td>
                         <td>@pago.totalSinDescuento</td>
                         <td>@pago.pagoParcial</td>
+                        <td>@pago.recibo</td>
+                        <td>@pago.tipoPago</td>
                         <td><input type="checkbox" name="cuotasAPagar" value="@pago.id" /> </td>
                     </tr>
                 }

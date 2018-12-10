@@ -9,11 +9,14 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.Forms.mapping
 import play.api.mvc._
+import slick.lifted.QueryBase
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaDao: CuotaDao, alumnosDao: AlumnoDao, inscripcionDao: InscripcionDao, cc: MessagesControllerComponents)(implicit ec: ExecutionContext)
   extends MessagesAbstractController(cc) {
+
 
   val buscarForm: Form[BuscarCuotasPorFamiliaForm] = Form {
     mapping(
@@ -30,6 +33,8 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
       "descuentoHermano" -> text,
       "descuentoEspecial" -> text,
       "totalAPagar" -> text,
+      "recibo"->text,
+      //"tipoPago"->text,
       "pagoParcial" -> boolean
     )(PagoForm.apply)(PagoForm.unapply)
   }
@@ -48,36 +53,37 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
 
   }
 
-  def generarObligacionDePagoMensual = Action.async{ implicit request =>
-    val valor = request.body.asFormUrlEncoded.get("valorCuotaBase").head
-
-    val cuotaBase = cuotaDao.create(valor.toDouble, LocalDate.now().getYear, LocalDate.now().getMonthValue)
-
-    cuotaBase.map{ c =>
-      alumnosDao.findAll.map{ flias =>
-       flias.map { f =>pagosDao.create(c.id, f.id, valor.toDouble * f.alumnos.size) }
-
+  def generarObligacionDePagoMensual = Action.async { implicit request =>
+    cuotaDao.cuotaExists(LocalDate.now().getYear, LocalDate.now().getMonthValue).map { existe =>
+      if (existe) Redirect(routes.PagoController.showPagarCuota()).flashing("success" -> "Ya existe cuota baase para este mes y año")
+      else {
+        val valor = request.body.asFormUrlEncoded.get("valorCuotaBase").head
+        val cuotaBase = cuotaDao.create(valor.toDouble, LocalDate.now().getYear, LocalDate.now().getMonthValue)
+        cuotaBase.map { c =>
+          alumnosDao.findAll.map { flias =>
+            flias.map { f => pagosDao.create(c.id, f.id, valor.toDouble * f.alumnos.size) }
+          }
         }
-      Redirect(routes.PagoController.showPagarCuota()).flashing("success" -> "Cuotas generadas para todas las familias")
-
+        Redirect(routes.PagoController.showPagarCuota()).flashing("success" -> "Cuotas generadas para todas las familias")
+      }
     }
-
   }
 
-  def generarInscripcion = Action.async{ implicit request =>
-    val valor = request.body.asFormUrlEncoded.get("valorInscripcion").head
 
-    val inscripcion = inscripcionDao.create(valor.toDouble, LocalDate.now().getYear + 1)
-
-    inscripcion.map{ c =>
-      alumnosDao.findAll.map{ flias =>
-        flias.map { f =>pagosDao.createPagoInscripcion(c.id, f.id, valor.toDouble * f.alumnos.size) }
-
+  def generarInscripcion = Action.async { implicit request =>
+    inscripcionDao.inscripcionExists(LocalDate.now().getYear + 1).map { existe =>
+      if (existe) Redirect(routes.PagoController.showPagarCuota()).flashing("success" -> "Ya existe inscripcion generada para próximo año")
+      else {
+        val valor = request.body.asFormUrlEncoded.get("valorInscripcion").head
+        val inscripcion = inscripcionDao.create(valor.toDouble, LocalDate.now().getYear + 1)
+        inscripcion.map { c =>
+          alumnosDao.findAll.map { flias =>
+            flias.map { f => pagosDao.createPagoInscripcion(c.id, f.id, valor.toDouble * f.alumnos.size) }
+          }
+        }
+        Redirect(routes.PagoController.showPagarCuota()).flashing("success" -> "Inscripciones generadas para todas las familias")
       }
-      Redirect(routes.PagoController.showPagarCuota()).flashing("success" -> "Inscripciones generadas para todas las familias")
-
     }
-
   }
 
 
@@ -127,7 +133,7 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
           alumnos<-  alumnosDao.findBy(ec, Some(pagos.head.familia), None, None, None)
         } yield (pagos, alumnos)
         pagosAlumnos.map {
-          case (pagos, alumnos) => Ok(views.html.showPagar(pagoForm, sumarPagos(pagos), alumnos.head.alumnos.toList, cuotasAPagar))
+          case (pagos, alumnos) => Ok(views.html.showPagar(errorForm, sumarPagos(pagos), alumnos.head.alumnos.toList, cuotasAPagar))
         }
       },
       pago => {
@@ -137,7 +143,7 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
             if (!pago.pagoParcial) {
               var totalAPagar = pago.totalAPagar.toDouble
               pagos.map{ p =>
-                pagosDao.resolver(p.id, totalAPagar, pago.descuentoHermano.toDouble + pago.descuentoEspecial.toDouble, pago.interes.toDouble );
+                pagosDao.resolver(p.id, totalAPagar, pago.descuentoHermano.toDouble + pago.descuentoEspecial.toDouble, pago.interes.toDouble, pago.recibo );
               }
 
             } else {
@@ -145,10 +151,10 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
               var total = pago.totalAPagar.toDouble
               pagos.map { p=>
                 if (total >= p.totalSinDescuento) {
-                  pagosDao.resolver(p.id, p.valorCuotaBase, 0D, 0D)
+                  pagosDao.resolver(p.id, p.valorCuotaBase, 0D, 0D, pago.recibo)
                   total= total - p.totalSinDescuento
                 } else {
-                  pagosDao.resolverParcial(p.id, total+ p.pagoParcial)
+                  pagosDao.resolverParcial(p.id, total+ p.pagoParcial, pago.recibo)
                 }
 
               }
@@ -166,11 +172,11 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
       errorForm => {
         val cuotasAPagar = request.body.asFormUrlEncoded.get("cuotasAPagar").head
         val pagosAlumnos = for {
-          pagos <-  pagosDao.getPagosPendientesByIds(ec, cuotasAPagar.split(",").map(_.toInt))
+          pagos <-  pagosDao.getInscripcionesPendientesByIds(ec, cuotasAPagar.split(",").map(_.toInt))
           alumnos<-  alumnosDao.findBy(ec, Some(pagos.head.familia), None, None, None)
         } yield (pagos, alumnos)
         pagosAlumnos.map {
-          case (pagos, alumnos) => Ok(views.html.showPagar(pagoForm, sumarPagos(pagos), alumnos.head.alumnos.toList, cuotasAPagar))
+          case (pagos, alumnos) => Ok(views.html.showPagar(pagoForm, sumarInscripciones(pagos), alumnos.head.alumnos.toList, cuotasAPagar))
         }
       },
       pago => {
@@ -180,7 +186,7 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
           if (!pago.pagoParcial) {
             var totalAPagar = pago.totalAPagar.toDouble
             inscripciones.map{ p =>
-              pagosDao.resolverInscripcion(p.id, totalAPagar, pago.descuentoHermano.toDouble + pago.descuentoEspecial.toDouble, pago.interes.toDouble );
+              pagosDao.resolverInscripcion(p.id, totalAPagar, pago.descuentoHermano.toDouble + pago.descuentoEspecial.toDouble, pago.interes.toDouble, pago.recibo);
             }
 
           } else {
@@ -188,10 +194,10 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
             var total = pago.totalAPagar.toDouble
             inscripciones.map { p=>
               if (total >= p.totalSinDescuento) {
-                pagosDao.resolverInscripcion(p.id, p.monto, 0D, 0D)
+                pagosDao.resolverInscripcion(p.id, p.monto, 0D, 0D, pago.recibo)
                 total= total - p.totalSinDescuento
               } else {
-                pagosDao.resolverInscripcionParcial(p.id, total+ p.pagoParcial)
+                pagosDao.resolverInscripcionParcial(p.id, total+ p.pagoParcial, pago.recibo)
               }
 
             }
@@ -265,6 +271,6 @@ class PagoController @Inject()(familiaDao: FamiliaDao, pagosDao: PagoDao, cuotaD
   }
 }
 case class BuscarCuotasPorFamiliaForm(familiaId: Int, valorCuotaBase: String, deuda: String)
-case class PagoForm (cuotasAPagar: String,interes:String, descuentoHermano: String, descuentoEspecial:String, totalAPagar: String, pagoParcial: Boolean)
+case class PagoForm (cuotasAPagar: String,interes:String, descuentoHermano: String, descuentoEspecial:String, totalAPagar: String, recibo:String, /*tipoPago: String,*/ pagoParcial: Boolean)
 
 

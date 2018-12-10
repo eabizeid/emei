@@ -2,12 +2,6 @@
 
     @import helper._
 
-
-    @request.flash.get("success").map { key =>
-        @request.messages(key)
-    }
-
-
     @main("Cuotas") {
 
     <div id="teaser">
@@ -18,6 +12,13 @@
             </div>
         </div>
     </div>
+        <div class="wrap">
+        @request.flash.get("success").map { key =>
+            <div class="alert alert-success" role="alert">
+                @request.messages(key)
+            </div>
+        }
+        </div>
     @form(routes.PagoController.realizarPagoInscripcion()) {
         <div class="wrap">
 
@@ -71,8 +72,12 @@
 
                     </dl>
                 </span>
+                <div class="form-row">
+                    <span>@inputText(pagoForm("recibo"), '_label -> "Recibo", '_class -> "form-group col-md-6")</span>
+                </div>
 
             </div>
+
             <div class="form-row">
                 @checkbox(pagoForm("pagoParcial"), '_label -> "Pago parcial?", '_class -> "form-group col-md-3")
 

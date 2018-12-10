@@ -31,6 +31,6 @@ case class Pago (id: Int, recibo: String, cuota: Int, totalSinDescuento: Double,
 
 case class Inscripcion(id: Int, anio: Int, valor: Double )
 
-case class PagoInscripcion(id:Int, inscripcion: Int,  totalSinDescuento: Double, tipoPago: Int, familia: Int, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean)
+case class PagoInscripcion(id:Int, inscripcion: Int,  totalSinDescuento: Double, tipoPago: Int, familia: Int, descuentoAplicado: Double, interes: Double, pagoParcial: Double, resuelto: Boolean, recibo:String)
 
 

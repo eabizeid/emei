@@ -397,7 +397,7 @@ trait Tables {
       * In this case, we are simply passing the id, name and page parameters to the Alumno case classes
       * apply and unapply methods.
       */
-    def * = (id, valor, mes, anio) <> ((CuotaBase.apply _).tupled, CuotaBase.unapply)
+    def * = (id, valor, anio, mes) <> ((CuotaBase.apply _).tupled, CuotaBase.unapply)
   }
 
   /**
@@ -444,6 +444,8 @@ trait Tables {
 
     def resuelto = column[Boolean]("resuelto")
 
+    def recibo = column[String]("recibo")
+
     /**
       * This is the tables default "projection".
       *
@@ -452,7 +454,7 @@ trait Tables {
       * In this case, we are simply passing the id, name and page parameters to the Pago case classes
       * apply and unapply methods.
       */
-    def * = (id, inscripcion, totalSinDescuento, tipoPago, familia, descuentoAplicado, interes, pagoParcial, resuelto) <> ((PagoInscripcion.apply _).tupled, PagoInscripcion.unapply)
+    def * = (id, inscripcion, totalSinDescuento, tipoPago, familia, descuentoAplicado, interes, pagoParcial, resuelto, recibo) <> ((PagoInscripcion.apply _).tupled, PagoInscripcion.unapply)
   }
 
   val pagoInscripcion = TableQuery[PagoInscripcionTable]

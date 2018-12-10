@@ -2,12 +2,6 @@
 
     @import helper._
 
-
-    @request.flash.get("success").map { key =>
-        @request.messages(key)
-    }
-
-
     @main("Cuotas") {
 
     <div id="teaser">
@@ -18,13 +12,35 @@
             </div>
         </div>
     </div>
+
         <div class="wrap">
+        @request.flash.get("success").map { key =>
+            <div class="alert alert-success" role="alert">
+                @request.messages(key)
+            </div>
+        }
+        </div>
+        <div class="wrap">
+        <div class="actionButtons">
+            <button id="buttonOblig" class="btn btn-large btn-primary" type="button"  value="buscar">Generar Obligacion de pagos mensual</button>
+            <button id="buttonPagosPend" class="btn btn-large btn-primary" type="button"  value="buscar">Pagos pendientes por familia</button>
+            <button id="buttonInscrip" class="btn btn-large btn-primary" type="button"  value="buscar">Generar Inscripciones</button>
+            <button id="buttonInscripPend" class="btn btn-large btn-primary" type="button" value="buscar">Inscripciones Pendientes por familia</button>
+            <button id="buttonDeuda" class="btn btn-large btn-primary" type="button" value="buscar">Administrar Deuda</button>
+        </div>
+
+        </div>
+        <hr>
+        <div class="wrap">
+            <div id="obligacionMensual">
             <h3>Generar Obligacion de pagos Mensual</h3>
             @form(routes.PagoController.generarObligacionDePagoMensual()) {
                 @inputText(buscarForm("valorCuotaBase"))
                 <button class="btn btn-large btn-primary" type="submit" value="buscar">Obligacion de pago mensual</button>
             }
-            <hr/>
+            </div>
+
+            <div id="pagosPendientesPorFlia">
             <h3>Consultar pagos pendientes por familia</h3>
             @form(routes.PagoController.buscar(), 'id-> "formBuscar") {
                 <div class="form-row">
@@ -32,15 +48,17 @@
                 </div>
                 <button class="btn btn-large btn-primary" type="submit" value="buscar">Buscar</button>
             }
-            <hr />
+            </div>
 
+            <div id="generarInscripciones">
             <h3>Generar Inscripciones</h3>
             @form(routes.PagoController.generarInscripcion()) {
                 @inputText(buscarForm("valorInscripcion"))
                 <button class="btn btn-large btn-primary" type="submit" value="buscar">generar</button>
             }
-            <hr/>
+            </div>
 
+            <div id="inscripcionesPorFlia">
             <h3>Inscripciones por familia</h3>
             @form(routes.PagoController.buscarInscripcionesPendientes(), 'id-> "formBuscarInscripciones") {
                 <div class="form-row">
@@ -48,11 +66,14 @@
                 </div>
                 <button class="btn btn-large btn-primary" type="submit" value="buscar">Buscar</button>
             }
-            <hr />
+            </div>
+
+            <div id="deuda">
             <div class="buttons">
 
                 <button id="buttonAgregarDeuda" class="btn btn-large btn-primary" type="button"  value="buscar">Agregar deuda anterior</button>
                 <button id="buttonVerDeudores" class="btn btn-large btn-primary" type="button" value="buscar">Consultar deuda anterior</button>
+            </div>
             </div>
         </div>
 

@@ -211,3 +211,7 @@ button {
 .fc-nonbusiness {
     background: #555 !important;
 }
+
+.btn {
+    margin-top: 4px;
+}

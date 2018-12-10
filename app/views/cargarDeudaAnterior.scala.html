@@ -2,12 +2,6 @@
 
     @import helper._
 
-
-    @request.flash.get("success").map { key =>
-        @request.messages(key)
-    }
-
-
     @main("Cuotas") {
 
     <div id="teaser">
@@ -17,6 +11,13 @@
                 <p>Informacionsobre el pago a realizar</p>
             </div>
         </div>
+    </div>
+    <div class="wrap">
+    @request.flash.get("success").map { key =>
+        <div class="alert alert-success" role="alert">
+            @request.messages(key)
+        </div>
+    }
     </div>
     @form(routes.PagoController.buscar()) {
         <div class="form-row"">

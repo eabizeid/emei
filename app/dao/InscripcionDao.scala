@@ -16,6 +16,11 @@ class InscripcionDao @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   def getInscripciones(ids:Seq[Int]) = {
     inscripcion.filter(_.id.inSet(ids))
   }
+
+  def inscripcionExists(anio: Int) = db.run{
+    inscripcion.filter(_.anio === anio).exists.result
+  }
+
   def create(valor: Double, anio: Int): Future[Inscripcion] = db.run {
     // We create a projection of just the anio, since we're not inserting a value for the id column
 

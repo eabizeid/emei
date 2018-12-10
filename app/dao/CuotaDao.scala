@@ -16,6 +16,10 @@ class CuotaDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   def getCuotas(ids:Seq[Int]) = {
     cuotasbase.filter(_.id.inSet(ids))
   }
+
+  def cuotaExists(anio: Int, mes: Int) = db.run{
+    cuotasbase.filter(_.anio === anio).filter(_.mes === mes).exists.result
+  }
   def create(valorBase: Double, anio: Int, mes:Int): Future[CuotaBase] = db.run {
     // We create a projection of just the anio, since we're not inserting a value for the id column
 

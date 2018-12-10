@@ -2,10 +2,6 @@
 
 @import helper._
 
-@request.flash.get("success").map { key =>
-    @request.messages(key)
-}
-
 
 @main("Alumnos") {
     <div id="teaser">
@@ -14,6 +10,13 @@
                 <h2><em >Inscripciones Pendientes</em></h2>
             </div>
         </div>
+    </div>
+    <div class="wrap">
+    @request.flash.get("success").map { key =>
+        <div class="alert alert-success" role="alert">
+            @request.messages(key)
+        </div>
+    }
     </div>
     <div  class="wrap">
         <div class="search">
